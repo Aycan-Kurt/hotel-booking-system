@@ -16,11 +16,7 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final RestTemplate restTemplate;
 
-    public BookingService(
-            BookingRepository bookingRepository,
-            RestTemplate restTemplate
-    ) {
-
+    public BookingService(BookingRepository bookingRepository, RestTemplate restTemplate) {
         this.bookingRepository = bookingRepository;
         this.restTemplate = restTemplate;
     }
@@ -40,8 +36,7 @@ public class BookingService {
             throw new RuntimeException("Check-out date must be after check-in date");
         }
 
-        String hotelServiceUrl =
-                "http://localhost:8080/api/v1/hotels/" + request.getHotelId();
+        String hotelServiceUrl = "http://localhost:8080/api/v1/hotels/" + request.getHotelId();
 
         HotelResponse hotel = restTemplate.getForObject(
                 hotelServiceUrl,
@@ -50,6 +45,17 @@ public class BookingService {
 
         if (hotel == null) {
             throw new RuntimeException("Hotel not found");
+        }
+
+        List<Booking> conflictingBookings =
+                bookingRepository.findByHotelIdAndCheckInDateLessThanAndCheckOutDateGreaterThan(
+                        request.getHotelId(),
+                        request.getCheckOutDate(),
+                        request.getCheckInDate()
+                );
+
+        if (!conflictingBookings.isEmpty()) {
+            throw new RuntimeException("Hotel is already booked for the selected date range");
         }
 
         Booking booking = new Booking(
