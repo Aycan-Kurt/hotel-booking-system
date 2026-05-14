@@ -1,17 +1,26 @@
 package com.se4458.hotel_service.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Hotel {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String city;
     private Double pricePerNight;
     private Double rating;
 
-    public Hotel(Long id, String name, String city,
-                 Double pricePerNight, Double rating) {
+    public Hotel() {
+    }
 
-        this.id = id;
+    public Hotel(String name, String city, Double pricePerNight, Double rating) {
         this.name = name;
         this.city = city;
         this.pricePerNight = pricePerNight;

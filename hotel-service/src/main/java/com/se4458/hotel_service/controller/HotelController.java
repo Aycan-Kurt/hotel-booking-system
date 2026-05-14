@@ -2,9 +2,7 @@ package com.se4458.hotel_service.controller;
 
 import com.se4458.hotel_service.model.Hotel;
 import com.se4458.hotel_service.service.HotelService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,11 +21,13 @@ public class HotelController {
     }
 
     @GetMapping("/api/v1/hotels/search")
-    public List<Hotel> searchHotels(
-            @RequestParam String city
-    ) {
-
+    public List<Hotel> searchHotels(@RequestParam String city) {
         return hotelService.searchHotelsByCity(city);
+    }
+
+    @PostMapping("/api/v1/hotels")
+    public Hotel createHotel(@RequestBody Hotel hotel) {
+        return hotelService.createHotel(hotel);
     }
 
     @GetMapping("/api/v1/hotels/health")
