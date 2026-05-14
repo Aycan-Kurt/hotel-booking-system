@@ -1,10 +1,12 @@
 package com.se4458.booking_service.service;
 
 import com.se4458.booking_service.dto.CreateBookingRequest;
+import com.se4458.booking_service.dto.HotelResponse;
 import com.se4458.booking_service.dto.UpdateBookingRequest;
 import com.se4458.booking_service.model.Booking;
 import com.se4458.booking_service.repository.BookingRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -12,9 +14,15 @@ import java.util.List;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final RestTemplate restTemplate;
 
-    public BookingService(BookingRepository bookingRepository) {
+    public BookingService(
+            BookingRepository bookingRepository,
+            RestTemplate restTemplate
+    ) {
+
         this.bookingRepository = bookingRepository;
+        this.restTemplate = restTemplate;
     }
 
     public List<Booking> getAllBookings() {
@@ -27,8 +35,21 @@ public class BookingService {
     }
 
     public Booking createBooking(CreateBookingRequest request) {
+
         if (!request.getCheckOutDate().isAfter(request.getCheckInDate())) {
             throw new RuntimeException("Check-out date must be after check-in date");
+        }
+
+        String hotelServiceUrl =
+                "http://localhost:8080/api/v1/hotels/" + request.getHotelId();
+
+        HotelResponse hotel = restTemplate.getForObject(
+                hotelServiceUrl,
+                HotelResponse.class
+        );
+
+        if (hotel == null) {
+            throw new RuntimeException("Hotel not found");
         }
 
         Booking booking = new Booking(
@@ -42,6 +63,7 @@ public class BookingService {
     }
 
     public Booking updateBooking(Long id, UpdateBookingRequest request) {
+
         if (!request.getCheckOutDate().isAfter(request.getCheckInDate())) {
             throw new RuntimeException("Check-out date must be after check-in date");
         }
