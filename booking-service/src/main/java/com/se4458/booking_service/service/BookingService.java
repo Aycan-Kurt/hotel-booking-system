@@ -36,16 +36,7 @@ public class BookingService {
             throw new RuntimeException("Check-out date must be after check-in date");
         }
 
-        String hotelServiceUrl = "http://localhost:8080/api/v1/hotels/" + request.getHotelId();
-
-        HotelResponse hotel = restTemplate.getForObject(
-                hotelServiceUrl,
-                HotelResponse.class
-        );
-
-        if (hotel == null) {
-            throw new RuntimeException("Hotel not found");
-        }
+        validateHotelExists(request.getHotelId());
 
         List<Booking> conflictingBookings =
                 bookingRepository.findByHotelIdAndCheckInDateLessThanAndCheckOutDateGreaterThan(
@@ -74,7 +65,22 @@ public class BookingService {
             throw new RuntimeException("Check-out date must be after check-in date");
         }
 
+        validateHotelExists(request.getHotelId());
+
         Booking booking = getBookingById(id);
+
+        List<Booking> conflictingBookings =
+                bookingRepository.findByHotelIdAndCheckInDateLessThanAndCheckOutDateGreaterThan(
+                        request.getHotelId(),
+                        request.getCheckOutDate(),
+                        request.getCheckInDate()
+                );
+
+        for (Booking conflictingBooking : conflictingBookings) {
+            if (!conflictingBooking.getId().equals(id)) {
+                throw new RuntimeException("Hotel is already booked for the selected date range");
+            }
+        }
 
         booking.setHotelId(request.getHotelId());
         booking.setGuestName(request.getGuestName());
@@ -87,5 +93,19 @@ public class BookingService {
     public void deleteBooking(Long id) {
         Booking booking = getBookingById(id);
         bookingRepository.delete(booking);
+    }
+
+    private void validateHotelExists(Long hotelId) {
+
+        String hotelServiceUrl = "http://localhost:8080/api/v1/hotels/" + hotelId;
+
+        HotelResponse hotel = restTemplate.getForObject(
+                hotelServiceUrl,
+                HotelResponse.class
+        );
+
+        if (hotel == null) {
+            throw new RuntimeException("Hotel not found");
+        }
     }
 }
