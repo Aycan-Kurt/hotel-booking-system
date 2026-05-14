@@ -22,6 +22,11 @@ public class HotelController {
         return hotelService.getAllHotels();
     }
 
+    @GetMapping("/api/v1/hotels/{id}")
+    public Hotel getHotelById(@PathVariable Long id) {
+        return hotelService.getHotelById(id);
+    }
+
     @GetMapping("/api/v1/hotels/search")
     public List<Hotel> searchHotels(@RequestParam String city) {
         return hotelService.searchHotelsByCity(city);

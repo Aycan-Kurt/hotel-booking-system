@@ -24,6 +24,14 @@ public class HotelService {
         return hotelRepository.findByCityIgnoreCase(city);
     }
 
+    public Hotel getHotelById(Long id) {
+
+        return hotelRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Hotel not found with id: " + id)
+                );
+    }
+
     public Hotel createHotel(CreateHotelRequest request) {
 
         Hotel hotel = new Hotel(
