@@ -1,5 +1,6 @@
 package com.se4458.hotel_service.service;
 
+import com.se4458.hotel_service.dto.CreateHotelRequest;
 import com.se4458.hotel_service.model.Hotel;
 import com.se4458.hotel_service.repository.HotelRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,15 @@ public class HotelService {
         return hotelRepository.findByCityIgnoreCase(city);
     }
 
-    public Hotel createHotel(Hotel hotel) {
+    public Hotel createHotel(CreateHotelRequest request) {
+
+        Hotel hotel = new Hotel(
+                request.getName(),
+                request.getCity(),
+                request.getPricePerNight(),
+                request.getRating()
+        );
+
         return hotelRepository.save(hotel);
     }
 }

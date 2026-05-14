@@ -1,7 +1,9 @@
 package com.se4458.hotel_service.controller;
 
+import com.se4458.hotel_service.dto.CreateHotelRequest;
 import com.se4458.hotel_service.model.Hotel;
 import com.se4458.hotel_service.service.HotelService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,8 @@ public class HotelController {
     }
 
     @PostMapping("/api/v1/hotels")
-    public Hotel createHotel(@RequestBody Hotel hotel) {
-        return hotelService.createHotel(hotel);
+    public Hotel createHotel(@Valid @RequestBody CreateHotelRequest request) {
+        return hotelService.createHotel(request);
     }
 
     @GetMapping("/api/v1/hotels/health")
