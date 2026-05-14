@@ -21,13 +21,11 @@ public class BookingService {
     }
 
     public Booking getBookingById(Long id) {
-
         return bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
     }
 
     public Booking createBooking(CreateBookingRequest request) {
-
         if (!request.getCheckOutDate().isAfter(request.getCheckInDate())) {
             throw new RuntimeException("Check-out date must be after check-in date");
         }
@@ -40,5 +38,10 @@ public class BookingService {
         );
 
         return bookingRepository.save(booking);
+    }
+
+    public void deleteBooking(Long id) {
+        Booking booking = getBookingById(id);
+        bookingRepository.delete(booking);
     }
 }

@@ -32,6 +32,12 @@ public class BookingController {
         return bookingService.createBooking(request);
     }
 
+    @DeleteMapping("/api/v1/bookings/{id}")
+    public String deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBooking(id);
+        return "Booking deleted successfully";
+    }
+
     @GetMapping("/api/v1/bookings/health")
     public String healthCheck() {
         return "Booking Service is running!";
