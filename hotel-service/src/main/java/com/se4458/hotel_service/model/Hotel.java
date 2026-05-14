@@ -20,7 +20,11 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(String name, String city, Double pricePerNight, Double rating) {
+    public Hotel(String name,
+                 String city,
+                 Double pricePerNight,
+                 Double rating) {
+
         this.name = name;
         this.city = city;
         this.pricePerNight = pricePerNight;
@@ -45,5 +49,21 @@ public class Hotel {
 
     public Double getRating() {
         return rating;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setPricePerNight(Double pricePerNight) {
+        this.pricePerNight = pricePerNight;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }

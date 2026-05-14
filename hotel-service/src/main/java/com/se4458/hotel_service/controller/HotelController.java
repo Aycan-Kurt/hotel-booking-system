@@ -1,6 +1,7 @@
 package com.se4458.hotel_service.controller;
 
 import com.se4458.hotel_service.dto.CreateHotelRequest;
+import com.se4458.hotel_service.dto.UpdateHotelRequest;
 import com.se4458.hotel_service.model.Hotel;
 import com.se4458.hotel_service.service.HotelService;
 import jakarta.validation.Valid;
@@ -35,6 +36,23 @@ public class HotelController {
     @PostMapping("/api/v1/hotels")
     public Hotel createHotel(@Valid @RequestBody CreateHotelRequest request) {
         return hotelService.createHotel(request);
+    }
+
+    @PutMapping("/api/v1/hotels/{id}")
+    public Hotel updateHotel(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateHotelRequest request
+    ) {
+
+        return hotelService.updateHotel(id, request);
+    }
+
+    @DeleteMapping("/api/v1/hotels/{id}")
+    public String deleteHotel(@PathVariable Long id) {
+
+        hotelService.deleteHotel(id);
+
+        return "Hotel deleted successfully";
     }
 
     @GetMapping("/api/v1/hotels/health")
