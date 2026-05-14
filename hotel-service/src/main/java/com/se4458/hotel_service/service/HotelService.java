@@ -39,4 +39,18 @@ public class HotelService {
 
         return hotels;
     }
+
+    public List<Hotel> searchHotelsByCity(String city) {
+
+        List<Hotel> filteredHotels = new ArrayList<>();
+
+        for (Hotel hotel : getAllHotels()) {
+
+            if (hotel.getCity().equalsIgnoreCase(city)) {
+                filteredHotels.add(hotel);
+            }
+        }
+
+        return filteredHotels;
+    }
 }
