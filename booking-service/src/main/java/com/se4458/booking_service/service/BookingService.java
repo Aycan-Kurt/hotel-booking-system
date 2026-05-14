@@ -1,6 +1,7 @@
 package com.se4458.booking_service.service;
 
 import com.se4458.booking_service.dto.CreateBookingRequest;
+import com.se4458.booking_service.dto.UpdateBookingRequest;
 import com.se4458.booking_service.model.Booking;
 import com.se4458.booking_service.repository.BookingRepository;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,21 @@ public class BookingService {
                 request.getCheckInDate(),
                 request.getCheckOutDate()
         );
+
+        return bookingRepository.save(booking);
+    }
+
+    public Booking updateBooking(Long id, UpdateBookingRequest request) {
+        if (!request.getCheckOutDate().isAfter(request.getCheckInDate())) {
+            throw new RuntimeException("Check-out date must be after check-in date");
+        }
+
+        Booking booking = getBookingById(id);
+
+        booking.setHotelId(request.getHotelId());
+        booking.setGuestName(request.getGuestName());
+        booking.setCheckInDate(request.getCheckInDate());
+        booking.setCheckOutDate(request.getCheckOutDate());
 
         return bookingRepository.save(booking);
     }

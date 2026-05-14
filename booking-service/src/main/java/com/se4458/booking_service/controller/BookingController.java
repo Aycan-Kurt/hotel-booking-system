@@ -1,6 +1,7 @@
 package com.se4458.booking_service.controller;
 
 import com.se4458.booking_service.dto.CreateBookingRequest;
+import com.se4458.booking_service.dto.UpdateBookingRequest;
 import com.se4458.booking_service.model.Booking;
 import com.se4458.booking_service.service.BookingService;
 import jakarta.validation.Valid;
@@ -30,6 +31,14 @@ public class BookingController {
     @PostMapping("/api/v1/bookings")
     public Booking createBooking(@Valid @RequestBody CreateBookingRequest request) {
         return bookingService.createBooking(request);
+    }
+
+    @PutMapping("/api/v1/bookings/{id}")
+    public Booking updateBooking(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateBookingRequest request
+    ) {
+        return bookingService.updateBooking(id, request);
     }
 
     @DeleteMapping("/api/v1/bookings/{id}")
