@@ -20,6 +20,12 @@ public class BookingService {
         return bookingRepository.findAll();
     }
 
+    public Booking getBookingById(Long id) {
+
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    }
+
     public Booking createBooking(CreateBookingRequest request) {
 
         if (!request.getCheckOutDate().isAfter(request.getCheckInDate())) {

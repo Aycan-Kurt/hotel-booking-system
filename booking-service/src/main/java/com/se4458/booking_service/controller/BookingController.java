@@ -22,6 +22,11 @@ public class BookingController {
         return bookingService.getAllBookings();
     }
 
+    @GetMapping("/api/v1/bookings/{id}")
+    public Booking getBookingById(@PathVariable Long id) {
+        return bookingService.getBookingById(id);
+    }
+
     @PostMapping("/api/v1/bookings")
     public Booking createBooking(@Valid @RequestBody CreateBookingRequest request) {
         return bookingService.createBooking(request);
